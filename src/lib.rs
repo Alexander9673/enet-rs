@@ -155,11 +155,11 @@ impl Enet {
                 incoming_bandwidth.to_enet_u32(),
                 outgoing_bandwidth.to_enet_u32(),
             )
-        };
 
-        // enable crc and range compression
-        (*inner).checksum = Some(enet_sys::enet_crc32);
-        enet_sys::enet_host_compress_with_range_coder(inner);
+            // enable crc and range compression
+            (*inner).checksum = Some(enet_sys::enet_crc32);
+            enet_sys::enet_host_compress_with_range_coder(inner);
+        };
 
         if inner.is_null() {
             return Err(Error(0));
