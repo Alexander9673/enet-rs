@@ -146,6 +146,21 @@ impl<'a, T> Peer<'a, T> {
         }
     }
 
+    pub fn set_data_v2(&mut self, data: T) {
+        unsafe {
+            let raw_data = (*self.inner).data as *mut T;
+
+            if !raw_data.is_null() {
+                // free old data
+                let _: Box<T> = Box::from_raw(raw_data);
+            }
+
+            let new_data = Box::into_raw(Box::new(data)) as *mut _;
+
+            (*self.inner).data = new_data;
+        }
+    }
+
     /// Returns the downstream bandwidth of this `Peer` in bytes/second.
     pub fn incoming_bandwidth(&self) -> u32 {
         unsafe { (*self.inner).incomingBandwidth }
